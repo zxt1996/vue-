@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        <h2>数据</h2>
+        {{m.a}}{{m.b}}
+        <button @click="fordelete">vue.delete</button>
+        <button @click="forset">vue.set</button>
+    </div>
+    <script src="./js/vue.js"></script>
+    <script>
+        new Vue({
+            el:'#app',
+            data:{
+                m:{
+                    a:'zz',
+                    b:'响应式删除'
+                }
+            },
+            methods:{
+                fordelete(){
+                    Vue.delete(this.m,'b')
+                },
+                forset(){
+                    Vue.set(this.m,'b','响应式增加')
+                }
+            }
+        })
+    </script>
+</body>
+</html>
