@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        {{counter}}
+        <!-- 父类侦听childToParent事件(由$emit方法定义)，并在接收到事件时触发onChildClick()方法 -->
+        <son @childtoparent="handleEvent" @increment="counter++"></son>
+        父组件从子组件获取的数据：{{fromChild}}
+    </div>
+
+    <template id="son">
+        <div>
+            <button @click="$emit('increment')">Click me to increment</button>
+            <input type="text" v-model="childMessage" @keyup="emitToParent">
+            子组件中：{{childMessage}}
+        </div>
+    </template>
+
+    <script src="./js/vue.js"></script>
+    <script>
+        let son = {
+            template:'#son',
+            data(){
+                return {
+                    childMessage: ''
+                }
+            },
+            methods:{
+                //将向父类发送数据的方法定义为' $emit() '的第一个参数。
+                //这是在父类中的<template>调用中引用的。第二个参数是有效载荷
+                emitToParent(event){
+                    this.$emit('childtoparent',this.childMessage)
+                }
+            },
+            updated(){
+                //监听当前实例上的自定义事件
+                //回调函数会接收所有传入事件触发函数的额外参数。
+                this.$on('childtoparent',(text)=>{
+                    console.log(text);
+                })
+            }
+        };
+
+        new Vue({
+            el:'#app',
+            data:{
+                counter:0,
+                fromChild:''//此值设置为子节点发出的值
+            },
+            components:{
+                son
+            },
+            methods:{
+                //当子组件发出“childToParent”事件时触发。
+                handleEvent(text){
+                    this.fromChild = text;
+                }
+            }
+        })
+    </script>
+</body>
+</html>

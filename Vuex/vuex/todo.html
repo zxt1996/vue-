@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        <div>
+            <todo-list :todos="todos"></todo-list>
+        </div>
+    </div>
+    <template id="mytodo">
+        <div>
+            <ul>
+                <li v-for="t in todos" :class="{completed:t.completed}">{{t.task}}</li>
+            </ul>
+        </div>
+    </template>
+    <script src="./js/vue.js"></script>
+    <script src="./js/vuex.js"></script>
+    <script>
+        Vue.use(Vuex);
+
+        const store = new Vuex.Store({
+            state:{
+                todos: [
+                    {
+                        task: 'Code',
+                        completed: true
+                    },
+                    {
+                        task: 'Sleep',
+                        completed: false
+                    },
+                    {
+                        task: 'Eat',
+                        completed: false
+                    }
+                ]
+            },
+            getters:{
+                todos:state=>state.todos
+            }
+        })
+
+        let mytodo = {
+            template:'#mytodo',
+            props:['todos']
+        }
+
+        var App = new Vue({
+            el:'#app',
+            computed: {
+                todos:function(){
+                    return this.$store.getters.todos
+                }
+            },
+            store:store,
+            components:{
+                'todo-list':mytodo
+            }
+        })
+    </script>
+</body>
+</html>

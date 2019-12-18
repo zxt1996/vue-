@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        <div>Hello</div>
+        <div>
+            <button @click="increment">通过commit调动mutation</button>
+            <p>state中存储的count数据：{{counter}}</p>
+            <button @click="getmydata">通过dispatch调用action</button>
+            {{fedata}}
+        </div>
+    </div>
+
+    <script src="./js/vue.js"></script>
+    <script src="./js/vuex.js"></script>
+    <script>
+        Vue.use(Vuex);
+
+        //关于状态的一切，包括如何检索状态值和更新状态值，都在存储中定义。
+        //您可以通过创建Vuex的存储实例并将存储细节作为对象传递来创建存储
+        const store = new Vuex.Store({
+            state:{
+                count:1,
+                fetchdata:''
+            },
+            //最好使用getters属性在存储中处理计算
+            getters:{
+                count:state=>state.count*2
+            },
+            //状态更改必须通过mutations来实现
+            mutations:{
+                increment:state=>state.count++,
+                changedata:(state,datas)=>{
+                    state.fetchdata = datas;
+                }
+            },
+            //用mutation只能做到同步变更，
+            //而action则用于实现异步变更。
+            actions:{
+                getMessages(context){
+                    fetch('https://api.coindesk.com/v1/bpi/currentprice.json')
+                        .then((res)=>res.json())
+                        .then((data)=>{
+                            if(data){
+                                context.commit('changedata',data);
+                            }
+                        })
+                }
+            }
+        })
+
+        const App = new Vue({
+            el:'#app',
+            store:store,
+            created() {
+                console.log(this.$store);
+            },
+            computed:{
+                counter:function(){
+                    return this.$store.state.count + ' ' + this.$store.getters.count;
+                },
+                fedata:function(){
+                    return this.$store.state.fetchdata;
+                }
+            },
+            methods: {
+                increment:function(){
+                    //mutations就像事件。要调用它们，必须使用commit方法
+                    this.$store.commit('increment');
+                },
+                //使用store.dispatch()方法来在组件中调用action
+                getmydata:function(){
+                    //调用dispatch也会返回一个promise对象
+                    this.$store.dispatch('getMessages');
+                }
+            },
+        })
+    </script>
+</body>
+</html>
