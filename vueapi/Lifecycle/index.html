@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>   
+    <div id="app">
+        <p>I'm text inside the component.</p>
+        <p ref="dom">{{counter}}</p>
+    </div>
+    <script src="./js/vue.js"></script>
+    <script>       
+       new Vue({
+           el:'#app',
+           data:{
+               x:5,
+               counter:0,
+               coolMethods: 'Lifecycle methods are awesome!'
+           },
+
+           //数据还没有被启动，组件生命周期中发生的事件还没有设置
+           beforeCreate:function(){
+               // `this` points to the view model instance
+               console.log('x is:'+this.x);// x is: undefined
+           },
+
+           //尽管还没有加载或呈现模板，但已启用对活动数据的访问。
+           created:function(){
+                // `this` points to the view model instance
+               console.log('x is:'+this.x); // x is: 5
+
+               //为了下面的更新钩子
+               setInterval(()=>{
+                   this.counter++;
+               },1000)
+           },
+
+           //挂载方法允许您在组件第一次呈现之前和之后立即访问它。
+           //beforeMount()方法是在模板编译完成并由Vue更新虚拟DOM之后调用的。
+           //之后，$el属性被添加到Vue实例中，本地DOM被更新，挂载()方法被调用。
+           beforeMount:function(){
+               // `this` points to the view model instance
+                console.log(`this.$el is yet to be created`);
+                console.log(this.$el.textContent);  
+           },
+
+           //mount()方法允许您访问模板并支持与DOM的交互。
+           //它主要用于获取组件的数据，并修改DOM以集成其他库和框架。
+           mounted:function(){
+               console.log(this.$el.textContent);
+           },
+
+           //更新方法对于调试很有用。 每当组件使用的反应性属性发生更改或重新渲染时，就会调用它们。
+           // 调用此钩子时，组件的DOM已被更新，因此您可以使用更新方法来执行与DOM相关的操作。         
+           //beforeUpdate()方法在组件上的数据更改之后运行，更新周期刚好在修补和重新呈现DOM之前开始。
+           //它允许您在组件呈现之前获取其上的任何反应性数据的新状态。
+           beforeUpdate:function(){
+               // Logs the counter value every second, before the DOM updates.
+               console.log(this.counter);
+           },
+
+           //updated()方法在组件上的数据更改和DOM重新呈现之后运行。
+           updated:function(){
+               // Logs true every second
+               console.log(+this.$refs['dom'].textContent === this.counter);
+           },
+
+           //销毁方法在组件生命周期的最后时刻使用。
+           //它们允许您在组件被销毁时执行清理等操作，在组件被拆下并从DOM中删除时执行清理等操作。
+           beforeDestroy: function() {
+                // Perform the teardown procedure for coolMethods which in this case is nothing.
+                this.coolMethods = null
+                delete this.coolMethods
+            },
+
+            //destroy()方法在组件已被销毁、其指令已被解除绑定且其事件侦听器已被删除后调用。
+            //destroy()方法可用于执行最后一分钟的清理工作，或者通知远程服务器组件已被销毁。
+       })
+    </script>
+</body>
+</html>

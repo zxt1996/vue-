@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        <son></son>
+    </div>
+    <script src="./js/vue.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script>
+        // Vue.component('son',{
+        //     inject:['name'],
+        //     methods:{
+        //         about:function(){
+        //             console.log(this.name);
+        //         }
+        //     },
+        //     template:`
+        //         <div>
+        //             {{this.name}}
+        //         </div>
+        //     `
+        // })
+
+        // new Vue({
+        //     el:'#app',
+        //     provide:{
+        //         name:'Aresn'
+        //     },
+        // })
+
+        Vue.component('son',{
+            inject:['app'],
+            template:`
+                <div>
+                    {{app.userInfo}}
+                </div>
+            `
+        })
+        new Vue({
+            el:'#app',
+            provide(){
+                return {
+                    app:this
+                }
+            },
+            data(){
+                return {
+                    userInfo:null
+                }
+            },
+            methods:{
+                getUserInfo(){
+                    axios.get('https://api.coindesk.com/v1/bpi/currentprice.json')
+                    .then(response => this.userInfo = JSON.stringify(response));
+                }
+            },
+            mounted(){
+                this.getUserInfo();
+            }
+        })
+    </script>
+</body>
+</html>

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app"></div>
+    <script src="./js/vue.js"></script>
+    <script>
+        const template = `
+                    <div>
+                        <ul>
+                            <li v-for="item in items">
+                                {{ item }}
+                            </li>
+                        </ul>
+                        <div>The mouse position is:{{x}}{{y}}</div>
+                    </div>
+                    `;
+
+        // const compiledTemplate = Vue.compile(template);
+
+        new Vue({
+            el:"#app",
+            data(){
+                return {
+                    items:['Item1', 'Item2'],
+                    clickCount:0,
+                    aboutColor:'green',
+                    x:0,
+                    y:0
+                }
+            },
+            computed:{
+                backgroundColors(){
+                    return {
+                        'pink':this.clickCount%2 === 0,
+                        'green':this.clickCount%2 !== 0,
+                    }
+                }
+            },
+            methods:{
+                onClick(){
+                    this.clickCount += 1;
+                },
+                aboutposition(event){
+                    this.x = event.clientX;
+                    this.y = event.clientY;
+                }
+            },
+            render(createElement){
+                // return createElement('h1','Helloworld');
+                // return compiledTemplate.render.call(this,createElement);
+                const button = createElement('button',{
+                    on:{
+                        click:this.onClick
+                    }
+                },'Click me');
+
+                const counter = createElement('span',{
+                    class:this.backgroundColors,
+                    style:{
+                        color:this.aboutColor,
+                    },
+                },[
+                    'Number of clicks:',
+                    this.clickCount
+                ]);
+
+                const position = createElement('div',{
+                    on:{
+                        mousemove:this.aboutposition
+                    },
+                    style:{
+                        height:'100vh',
+                    },
+                },[
+                    'The mouse position is: ',
+                    this.x,
+                    ' ',
+                    this.y
+                ])
+
+                return createElement('div',[
+                    button,counter,position
+                ])
+            }
+        })
+    </script>
+</body>
+</html>

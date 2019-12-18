@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        <myone :a="a" @aboutlisteners="aboutlisteners" @mycolor="mycolor"></myone>
+    </div>
+
+    <template id="one">
+        <div>
+            <p>one的$attrs: {{$attrs}}</p>
+            <two v-bind="$attrs" v-on="$listeners"></two>
+        </div>
+    </template>
+
+    <template id="two">
+        <div class="center">
+            <p>two的$attrs: {{$attrs}}</p>
+            <button @click="$listeners.aboutlisteners">two $listeners</button>
+            <button @click="$listeners.mycolor('ss')">color</button>
+        </div>
+    </template>
+
+
+    <script src="./js/vue.js"></script>
+    <script>
+        let two = {
+            template:'#two',
+            created(){
+                console.log(this.$attrs);
+                console.log(this.$listener);
+            }
+        }
+
+        let myone = {
+            template:'#one',
+            data:function(){
+                return {
+                    onedata:'one的数据'
+                }
+            },
+            created(){
+                console.log(this.$attrs);
+                console.log(this.$listener);
+            },
+            components:{
+                two
+            },
+        }
+       
+        new Vue({
+            el:'#app',
+            data:{
+                a:'aa'
+            },
+            methods:{
+                aboutlisteners(){
+                    console.log('aboutlisteners');
+                },
+                mycolor(el){
+                    console.log(el);
+                }
+            },
+            components:{
+                myone
+            }
+        })
+    </script>
+</body>
+</html>
