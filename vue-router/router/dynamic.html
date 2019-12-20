@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        <router-link to="/user/111">去/user/111</router-link>
+        <router-link to="/user/222">去/user/222</router-link>
+        <router-link to="/user/111/profile">去/user/111/profile</router-link>
+        <button @click="forpush">编程式导航</button>
+        <h3>使用go进行路由跳转</h3>
+        <p>输入你想跳转的数字</p>
+        <input type="text" v-model="num">
+        <button @click="gonum(num)">跳动</button>
+        <router-view></router-view>
+    </div>
+    <script src="./js/vue.js"></script>
+    <script src="./js/vuerouter.js"></script>
+    <script>
+        Vue.use(VueRouter);
+
+        const User = {
+            template:`
+                <div>
+                    <h3>路由是/user</h3>
+                    <p>不管子路由怎么变，都是显示该模板的内容</p>
+                    <p>一个“路径参数”使用冒号 : 标记。
+                    当匹配到一个路由时，参数值会被设置到 this.$route.params</p>
+                    {{$route.params.id}}
+                    <h3>在嵌套的出口中渲染组件</h3>
+
+                    <router-view></router-view>
+                </div>
+            `
+        };
+
+        const abouterror = {
+            template:`
+                <div>
+                    <h1>路径错误</h1>
+                </div>
+            `
+        }
+
+        const userprofile = {
+            template:`
+                <div>
+                    <p>
+                        嵌套路由的使用
+                    </p>
+                </div>
+            `
+        }
+        const router = new VueRouter({
+            routes:[
+                {
+                    path:'/user/:id',
+                    component:User,
+                    children:[
+                        {
+                            // 当 /user/:id/profile 匹配成功，
+                            // userprofile 会被渲染在 User 的 <router-view> 中
+                            path:'profile',
+                            component:userprofile
+                        }
+                    ]
+                },
+                {
+                    path:"*",
+                    component:abouterror
+                }
+            ]
+        });
+
+        new Vue({
+            el:'#app',
+            router,
+            data:function(){
+                return {
+                    num:0
+                }
+            },
+            methods: {
+                forpush(){
+                    //字符串方式
+                    // this.$router.push('/user/123')
+                    //对象方式
+                    this.$router.push({path:'/user/123'})
+                },
+                gonum(num){
+                    this.$router.go(num);
+                }
+            },
+        })
+    </script>
+</body>
+</html>

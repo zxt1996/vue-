@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        <router-link to="/">/</router-link>
+        <router-link to="/profile">/profile</router-link>
+        <div>
+            <router-view></router-view>
+        </div>
+    </div>
+    <template id="profile">
+        <div>
+            {{mymsg}}
+        </div>
+    </template>
+
+    <template id="hello">
+        <div>
+            <router-link :to="{name:'profile',params:{msgs}}">
+                go to your profile
+            </router-link>
+
+            <router-link :to="{name:'two'}">
+                go to two
+            </router-link>
+
+            <router-link :to="{name:'forfunction',params:{years}}">
+                go to forfunction
+            </router-link>
+        </div>
+    </template>
+
+    <template id="two">
+        <div>
+            <h3>props设置的静态对象</h3>
+            <p>name：{{name}}</p>
+            <p>gender：{{gender}}</p>
+        </div>
+    </template>
+
+    <template id="forfunction">
+        <div>
+            <h3>函数模式</h3>
+            {{year}}
+        </div>
+    </template>
+    <script src="./js/vue.js"></script>
+    <script src="./js/vuerouter.js"></script>
+    <script>
+        Vue.use(VueRouter);
+        //对象模式
+        let two = {
+            template:'#two',
+            //// 类似于 ES6 的对象解构，将路由配置 props 中的属性取出来
+            props:['name','gender']
+        }
+        //函数模式
+        let forfunction = {
+            template:'#forfunction',
+            // 此处接收路由配置 props 传进来对象的 params 属性，也是对象解构
+            props:['year']
+        }
+        //函数模式中props接收的函数
+        const dynamicPropsFn = route => {
+            const now = new Date();
+            return {
+                //route.params.years就是跳转时传入的数据
+                year:(now.getFullYear() + ' ' + parseInt(route.params.years) + '!')
+            }
+        }
+        //布尔模式
+        let profile = {
+            name:'profile',
+            template:'#profile',
+            props:['msgs'],
+            data(){
+                return {
+                    welcome:'this is your profile'
+                }
+            },
+            computed: {
+                mymsg(){
+                    return this.msgs;
+                }
+            },
+        }
+
+        let hello = {
+            name:'hello',
+            template:'#hello',
+            data(){
+                return {
+                    msgs:'this is alis profile',
+                    name:'only',
+                    years:'2049'
+                }
+            }
+        }
+
+        const router = new VueRouter({
+            routes: [
+                {
+                    path: '/',
+                    name: 'hello',
+                    component: hello
+                },
+                {
+                    path: '/profile',
+                    name: 'profile',
+                    component: profile,
+                    //布尔模式
+                    //如果 props 被设置为 true，route.params 将会被设置为组件属性
+                    props: true
+                },
+                {
+                    path:'/two',
+                    name:'two',
+                    component:two,
+                    //对象模式
+                    //如果 props 是一个对象，它会被按原样设置为组件属性。当 props 是静态的时候有用。
+                    props:{
+                        name:'jojo',
+                        gender:'male'
+                    }
+                },
+                {
+                    path:'/forfunction',
+                    name:'forfunction',
+                    component:forfunction,
+                    //函数模式
+                    //props 也可以是一个函数的返回值，这样的就可以将动态的 parmas 与静态值结合起来。
+                    props:dynamicPropsFn
+                }
+            ]
+        })
+
+        new Vue({
+            el:'#app',
+            router
+        })
+    </script>
+</body>
+</html>

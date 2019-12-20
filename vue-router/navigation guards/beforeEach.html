@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        <router-view @haslogins="haslogin"></router-view>
+    </div>
+    <template id="myto">
+        <div>
+            <h2>顺利跳转时的对象</h2>
+        </div>
+    </template>
+
+    <template id="myfrom">
+        <div>
+            <h2>要离开的路由对象</h2>
+            <button @click="outlogin">{{mylogin}}</button>
+            {{about}}
+            <router-link to="/myto">/myto</router-link>
+        </div>
+    </template>
+
+    <template id="mynext">
+        <div>
+            <h2>重定向时的路由对象</h2>
+        </div>
+    </template>
+
+    <template id="login">
+        <div>
+            <h2>请登录</h2>
+            <button @click="forlogin">登录</button>
+        </div>
+    </template>
+    <script src="./js/vue.js"></script>
+    <script src="./js/vuerouter.js"></script>
+    <script>
+        Vue.use(VueRouter);
+        let myfrom = {
+            template:'#myfrom',
+            name:'myfrom',
+            data(){
+                return {
+                    yourlogin:'登录',
+                    nologin:'退出登录',
+                    about:'可以顺利跳转'
+                }
+            },
+            methods: {
+                outlogin(){
+                    console.log(localStorage.getItem('name'));
+                    if(localStorage.getItem('name')){
+                        localStorage.removeItem('name');
+                    }else{
+                        localStorage.setItem('name',true);
+                    }
+                }
+            },
+            computed: {
+                mylogin(){
+                    if(!localStorage.getItem('name')){
+                        this.about = "可以顺利跳转";
+                        return this.yourlogin;
+                    }else{
+                        this.about = "不能顺利跳转";
+                        return this.nologin;
+                    }
+                }
+            }
+        }
+
+        let myto = {
+            template:'#myto',
+            name:'myto'
+        }
+
+        let mynext = {
+            template:'#mynext',
+            name:'mynext'
+        }
+
+        let login = {
+            template:'#login',
+            name:'login',
+            data(){
+                return {
+                    aboutlogin:false
+                }
+            },
+            meta: { requiresAuth: true },
+            methods: {
+                forlogin(){
+                    localStorage.setItem('name',true);
+                    this.$emit('haslogins',this.aboutlogin);
+                }
+            },
+        }
+        const router = new VueRouter({
+            routes: [
+                {
+                    path:'/',
+                    component:myfrom,
+                },
+                {
+                    path:'/myto',
+                    component:myto,
+                    name:'myto'
+                },
+                {
+                    path:'/mynext',
+                    component:mynext
+                },
+                {
+                    path:'/login',
+                    component:login
+                }
+            ]
+        });
+
+        //全局前置守卫
+        router.beforeEach((to, from, next) => {
+            // to and from are both route objects. must call `next`.
+            console.log(to.path,localStorage.getItem('name'));
+            if(to.path == '/myto' && !localStorage.getItem('name')){
+                next('/login');
+            }else{
+                next();
+            }
+        })
+
+        new Vue({
+            el:'#app',
+            router,
+            data:{
+                userauthenticated:false
+            },
+            methods: {
+                haslogin(text){
+                    this.$router.push('myto').catch(err=>{
+                        console.log(err);
+                    });
+                },
+                
+            },
+        })
+    </script>
+</body>
+</html>

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        {{formapstate.jojo}}
+        {{changename}}
+        {{changenum}}
+        <button @click="realynum">改变数据</button>
+        <button @click="realyname('巴拉巴拉巴拉吧')">改变名字</button>
+    </div>
+    <script src="./js/vue.js"></script>
+    <script src="./js/vuex.js"></script>
+    <script>
+        Vue.use(Vuex);
+        const store = new Vuex.Store({
+            state:{
+                todos: [
+                    { id: 1, text: '...', done: true },
+                    { id: 2, text: '...', done: false }
+                ],
+                formapstate:{
+                    'z':0,
+                    'jojo':'ss'
+                }
+            },
+            getters:{
+                changenum:function(state){
+                    return state.formapstate.z + 1;
+                },
+                changename:function(state){
+                    return state.formapstate.jojo + '我是jojo二代'
+                }
+            },
+            mutations:{
+                realynum:function(state){
+                    state.formapstate.z++;
+                },
+                realyname:function(state,name){
+                    state.formapstate.jojo = '改变jojo的名字：' + name
+                }
+            }
+        })
+
+        new Vue({
+            el:'#app',
+            store,
+            computed: //mapState 的作用就是帮我们把一个对象或数组里的值转化成计算属性的写法
+            //     Vuex.mapState([
+            //         // // 映射 this.formapstate 为 store.state.formapstate
+            //         'formapstate',
+            // ])
+                // Vuex.mapState({
+                //     formapstate:state=>state.formapstate
+                // })
+                // Vuex.mapState({
+                //     formapstate:'formapstate'
+                // }),
+                {
+                    ...Vuex.mapState({
+                        formapstate:'formapstate'
+                    }),
+                    ...Vuex.mapGetters({
+                        changenum:'changenum',
+                        changename:'changename'
+                    })
+                },
+            methods: {
+                ...Vuex.mapMutations({
+                    realynum:'realynum',
+                    realyname:'realyname'
+                })
+            },
+        })
+    </script>
+</body>
+</html>

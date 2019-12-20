@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        <div>
+            <router-link to="/">/</router-link>
+            <router-link to="/other">/other</router-link>
+        </div>
+
+        <div>
+            <router-view></router-view>
+            <router-view name="a"></router-view>
+            <router-view name="b"></router-view>
+        </div>
+    </div>
+
+    <template id="one">
+        <div>
+            one
+        </div>
+    </template>
+
+    <template id="two">
+        <div>
+            two
+        </div>
+    </template>
+
+    <template id="three">
+        <div>
+            three
+        </div>
+    </template>
+    <script src="./js/vue.js"></script>
+    <script src="./js/vuerouter.js"></script>
+    <script>
+        Vue.use(VueRouter);
+        let one = {
+            template:'#one'
+        }
+        let two = {
+            template:'#two'
+        }
+        let three = {
+            template:'#three'
+        }
+        const router = new VueRouter({
+            routes: [
+                {
+                    path:'/',
+                    components:{
+                        default:one,
+                        a:two,
+                        b:three
+                    }
+                },
+                {
+                    path:'/other',
+                    components:{
+                        default:three,
+                        a:two,
+                        b:one
+                    }
+                }
+            ]
+        })
+        new Vue({
+            el:"#app",
+            router
+        })
+    </script>
+</body>
+</html>

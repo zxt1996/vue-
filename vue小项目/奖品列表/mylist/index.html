@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        <son
+         v-for="(username,index) in names"
+         :name = 'username'
+         :time = "times[index]"
+         :key="index"
+         ></son>
+    </div>
+
+    <template id="son">
+        <div>
+            <div class="everyrtc">
+                <span>{{time}}</span>
+                <span>{{name}}</span>
+            </div>
+        </div>
+    </template>
+    <script src="./js/vue.js"></script>
+    <script>
+        let son = {
+            template:'#son',
+            props:[
+                'time',
+                'name'
+            ]
+        }
+
+        new Vue({
+            el:'#app',
+            data(){
+                return {
+                    times:[],
+                    names:[]
+                }
+            },
+            components:{
+                son
+            },
+            created() {
+                fetch('http://49.232.166.11:2626/index/wheel/get_draw_record_list')
+                    .then((res)=>res.json())
+                    .then(mydata=>{
+                        let temp = mydata.data.draw_record_list;
+                        temp.forEach((el)=>{
+                            let truetime = new Date(el.draw_time_stamp*1000);
+                            let realytruetime = truetime.getFullYear()
+                            + '.' + (truetime.getMonth()+1)
+                            + '.' + truetime.getDate()
+                            + ' ' + truetime.getHours()
+                            + ':' + truetime.getMinutes();
+                            this.names.push(el.prize_name);
+                            this.times.push(realytruetime);
+                        })
+                    })
+            },
+        })
+    </script>
+</body>
+</html>

@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="./css/index.css">
+    <link rel="stylesheet" href="//at.alicdn.com/t/font_1572565_9zusefxrqv.css">
+</head>
+<body>
+    <div id="app">
+        <father></father>
+    </div>
+
+    <template id="father">
+        <div class="writetext">
+            <div class="onlyfather">
+                <textarea name="yourtext" id="ytext" cols="30" rows="10" v-model="mytext"></textarea>
+                <button @click="add" class="fab">发布评论</button>
+            </div>
+            <son
+            v-for="(yourt,index) in everytext"
+            :mywrite = "yourt"
+            :nowtime = "nowdata[index]"
+            :sonid="index"
+            :propslike="likecounter[index]"
+            :key = "index"
+            @candelete="deleteone"
+            @fortop = "changetop"
+            @forlike="falike"
+            ></son
+            >
+        </div>
+    </template>
+
+    <template id="son">
+        <div class="everyuser">
+            <div class="userhead">
+                <div>
+                    <img src="https://ss1.baidu.com/9vo3dSag_xI4khGko9WTAnF6hhy/image/h%3D300/sign=05b297ad39fa828bce239be3cd1e41cd/0eb30f2442a7d9337119f7dba74bd11372f001e0.jpg">
+                </div>
+            </div>
+            <div class="usermid">
+                <p>{{onlysonid}}</p>
+                <p>{{onlynowtime}}</p>
+                <p>{{onlymywrite}}</p>
+            </div>
+            <div class="userfooter">
+                <div class="ufh" @click="totop">
+                    <i class="iconfont icon-zhidingtop"></i>
+                </div>
+                <ul>
+                    <li>
+                        <span>
+                            <button @click="like">点赞</button>
+                            {{dianzan}}
+                        </span>
+                        <span>
+                            <i class="iconfont icon-dianzan"></i>
+                        </span>
+                    </li>
+                    <li>
+                        <span>评论</span>
+                        <span>
+                            <i class="iconfont icon-pinglun"></i>
+                        </span>
+                    </li>
+                    <li>
+                        <span>
+                            <button @click="deleteson">删除</button>
+                        </span>
+                        <span>
+                            <i class="iconfont icon-shanchu"></i>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </template>
+    <script src="./js/vue.js"></script>
+    <script>
+        let son = {
+            template:'#son',
+            props:[
+                'mywrite',
+                'nowtime',
+                'sonid',
+                'propslike'
+            ],
+            data(){
+                return {
+                    dianzan:0
+                }
+            },
+            computed: {
+                onlymywrite(){
+                    return this.mywrite; 
+                },
+                onlynowtime(){
+                    return this.nowtime;
+                },
+                onlysonid(){
+                    return this.sonid
+                },
+                dianzans(){
+                    return this.propslike
+                }
+            },
+            mounted() {
+                this.dianzan = this.propslike;
+            },
+            methods: {
+                deleteson(){
+                    this.$emit('candelete',this.mywrite);
+                },
+                totop(){
+                    this.$emit('fortop',this.mywrite,this.nowtime,this.dianzan);
+                },
+                like(){
+                    this.dianzan++;
+                    this.$emit('forlike',this.dianzan,this.sonid);
+                }
+            },
+        }
+
+        let father = {
+            template:'#father',
+            data:function(){
+                return {
+                    mytext:'',
+                    usernums:[],
+                    everytext:[],
+                    nowdata:[],
+                    count:0,
+                    likecounter:[]
+                }
+            },
+            components:{
+                son
+            },
+            methods: {
+                add(){
+                    let nowdate = new Date();
+                    let mydate = nowdate.getFullYear() + '年'
+                                 + (nowdate.getMonth()+1) + '月'
+                                  + nowdate.getDate() + '日'
+                                  + nowdate.getHours() + '时'
+                                  + nowdate.getMinutes() + '分'
+                                  + nowdate.getSeconds() + '秒';
+                    this.count++;
+                    this.nowdata.push(mydate);
+                    this.usernums.push(this.count);
+                    this.everytext.push(this.mytext);
+                    this.likecounter.push(0);
+                    this.mytext = '';
+                },
+                deleteone(num){
+                    let who = this.everytext.indexOf(num);
+                    // console.log(who,this.nowdata,this.everytext);
+                    this.everytext.splice(who,1);
+                    this.nowdata.splice(who,1);
+                    console.log(this.likecounter)
+                    this.likecounter.splice(who,1);
+                    console.log(this.likecounter)
+                },
+                changetop(onetop,time,dian){
+                    let who = this.nowdata.indexOf(onetop);
+                    this.everytext.splice(who,1);
+                    this.nowdata.splice(who,1);
+                    console.log(this.likecounter);
+                    this.likecounter.splice(who,1);
+                    this.everytext.unshift(onetop);
+                    this.nowdata.unshift(time);
+                    this.likecounter.unshift(dian);
+                    console.log(this.likecounter);
+                },
+                falike(counter,who){
+                    this.likecounter[who] = counter;
+                    console.log(this.likecounter)
+                }
+            },
+        }
+        
+        new Vue({
+            el:'#app',
+            components:{
+                father
+            }
+        })
+    </script>
+</body>
+</html>

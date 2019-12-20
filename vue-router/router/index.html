@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        <h3>通过router-link组件来导航</h3>
+        <p>
+            <router-link to="/foo">go to foo</router-link>
+            <!-- 命令路由的写法 -->
+            <router-link :to="{name:'foo'}">命令路由的写法foo</router-link>
+            <router-link to="/bar">go to bar</router-link>
+        </p>
+
+        <router-view></router-view>
+    </div>
+
+    <template id="foo">
+        <div>
+            foo
+        </div>
+    </template>
+
+    <template id="bar">
+        <div>
+            bar
+        </div>
+    </template>
+
+    <script src="./js/vue.js"></script>
+    <script src="./js/vuerouter.js"></script>
+    <script>
+        Vue.use(VueRouter);
+
+        let foo = {
+            template:'#foo'
+        }
+
+        let bar = {
+            template:'#bar'
+        }
+
+        const routes = [
+            {
+                path:'/foo',
+                component:foo,
+                //命名路由
+                name:'foo'
+            },
+            {
+                path:'/bar',
+                component:bar
+            }
+        ]
+
+        const router = new VueRouter({
+            routes
+        })
+        new Vue({
+            el:'#app',
+            router
+        })
+    </script>
+</body>
+</html>
