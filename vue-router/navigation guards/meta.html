@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        <div>
+            <router-link to="/one">/one</router-link>
+        </div>
+        <div>
+            <router-view></router-view>
+        </div>
+    </div>
+    <template id="one">
+        <div>
+            <h3>one</h3>
+            <h4>需要登录后才能跳转的路由</h4>
+            <router-link to="/one/two">/two</router-link>
+            <h4>不需要登录就能跳转的界面</h4>
+            <router-link to="/one/three">/three</router-link>
+            <div>
+                <router-view></router-view>
+            </div>
+        </div>
+    </template>
+
+    <template id="two">
+        <div>
+            <h3>two</h3>
+        </div>
+    </template>
+
+    <template id="three">
+        <div>
+            <h3>three</h3>
+            <p>不用登录就能跳转的界面</p>
+        </div>
+    </template>
+
+    <template id="login">
+        <div>
+            <h3>请登录</h3>
+        </div>
+    </template>
+    <script src="./js/vue.js"></script>
+    <script src="./js/vuerouter.js"></script>
+    <script>
+        Vue.use(VueRouter);
+
+        let one = {
+            template:'#one'
+        }
+
+        let two = {
+            template:'#two'
+        }
+
+        let three = {
+            template:'#three'
+        }
+
+        let login = {
+            template:'#login'
+        }
+        const router = new VueRouter({
+            routes: [
+                {
+                    path:'/one',
+                    component:one,
+                    children:[
+                        {
+                            path:'two',
+                            component:two,
+                            meta:{
+                                // 添加该字段，表示进入这个路由是需要登录的
+                                requiresAuth:true
+                            }
+                        },
+                        {
+                            path:'three',
+                            component:three
+                        }
+                    ]
+                },
+                {
+                    path:'/login',
+                    component:login
+                }
+            ]
+        });
+
+        router.beforeEach((to,from,next)=>{
+            //可以在路由元信息指定哪些页面需要登录权限
+            const islogin = false;//假设没有登录(这里应该从接口获取)
+
+            //一个路由匹配到的所有路由记录会暴露为 $route 对象（还有在导航守卫中的路由对象）的 $route.matched 数组。
+            //因此，我们需要遍历 $route.matched 来检查路由记录中的 meta 字段。
+            if(to.matched.some(record => record.meta.requiresAuth)){
+                if(!islogin){
+                    next('/login');//跳转到登录
+                }else{
+                    next();
+                }
+            }else{
+                next();
+            }
+        })
+
+        new Vue({
+            el:'#app',
+            router
+        })
+    </script>
+</body>
+</html>

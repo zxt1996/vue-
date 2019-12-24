@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        <router-link to="/one">/one</router-link>
+        <router-link to="/tailwindcss">/tailwindcss</router-link>
+        <div>
+            <router-view></router-view>
+        </div>
+    </div>
+    <template id="one">
+        <div>
+            <h2>one</h2>
+        </div>
+    </template>
+
+    <template id="tailwindcss">
+        <div>
+            <h2>tailwindcss</h2>
+            {{initialData}}
+        </div>
+    </template>
+    <script src="./js/vue.js"></script>
+    <script src="./js/vuerouter.js"></script>
+    <script>
+        Vue.use(VueRouter);
+
+        //从数据获取的角度来看，beforeRouteEnter的全部要点是避免担心“无数据”情况
+        function getInitialData(repo){
+            return fetch(`https://api.github.com/repos/tailwindcss/${repo}`).then(r=>r.json());
+        }
+
+        let one = {
+            template:'#one',
+            data(){
+                return {
+                    count:0
+                }
+            },
+            beforeCreate() {
+                console.log('进入该组件');
+            },
+            beforeRouteEnter (to, from, next) {
+                // 在渲染该组件的对应路由被 confirm 前调用
+                // 不！能！获取组件实例 `this`
+                // 因为当守卫执行前，组件实例还没被创建
+                console.log("before enter");
+                 // 通过 `vm` 访问组件实例
+                next(vm => {
+                    console.log("before enter next function");
+                    vm.count++;
+                    console.log(vm.count);
+                })
+            }
+        }
+
+        let tailwindcss = {
+            template:'#tailwindcss',
+            props:['repo'],
+            data(){
+                return {
+                    initialData:{}
+                }
+            },
+            beforeRouteEnter(to,from,next){
+                getInitialData(to.path.split('/')[1]).then(r=>{
+                    next(vm=>{
+                        //beforeRouteEnter钩子将使用返回的任何数据，并将其分配给该组件的data属性。
+                        vm.initialData = r;
+                        console.log(vm.initialData)
+                    });
+                })
+            },
+        }
+
+        const router = new VueRouter({
+            routes: [
+                {
+                    path:'/one',
+                    component:one
+                },
+                {
+                    path:'/tailwindcss',
+                    component:tailwindcss
+                }
+            ]
+        })
+
+        new Vue({
+            el:'#app',
+            router,
+        })
+    </script>
+</body>
+</html>

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        <router-link to="/tailwindcss">/tailwindcss</router-link>
+        <div>
+            <router-view></router-view>
+        </div>
+    </div>
+
+    <template id="tailwindcss">
+        <div>
+            <h2>tailwindcss</h2>
+            <router-link to="/leave">/leave</router-link>
+            {{counter}}
+        </div>
+    </template>
+
+    <template id="leave">
+        <div>
+            <h3>leave</h3>
+        </div>
+    </template>
+    <script src="./js/vue.js"></script>
+    <script src="./js/vuerouter.js"></script>
+    <script>
+        Vue.use(VueRouter);
+
+        let tailwindcss = {
+            template:'#tailwindcss',
+            data(){
+                return {
+                    initialData:{},
+                    counter:''
+                }
+            },
+            // 在当前路由改变，但是该组件被复用时调用
+            // 举例来说，对于一个带有动态参数的路径 /foo/:id，在 /foo/1 和 /foo/2 之间跳转的时候，
+            // 由于会渲染同样的 Foo 组件，因此组件实例会被复用。而这个钩子就会在这个情况下被调用。
+            // 可以访问组件实例 `this`
+            beforeRouteUpdate(to,from,next){
+                this.counter = to.path;
+                console.log(this.counter);
+                next();
+            },
+            // 导航离开该组件的对应路由时调用
+            // 可以访问组件实例 `this`
+            beforeRouteLeave (to, from, next) {
+                const answer = window.confirm('Do you really want to leave? you have unsaved changes!');
+                if(answer){
+                    next()
+                }else{
+                    next(false);
+                }
+            }
+        }
+
+        let leave = {
+            template:'#leave'
+        }
+        const router = new VueRouter({
+            routes: [
+                {
+                    path:'/tailwindcss/:id',
+                    component:tailwindcss
+                },
+                {
+                    path:'/leave',
+                    component:leave
+                }
+            ]
+        })
+
+        new Vue({
+            el:'#app',
+            router,
+        })
+    </script>
+</body>
+</html>

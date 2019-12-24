@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        <router-link to="/">/</router-link>
+        <div>
+            <router-view></router-view>
+        </div>
+    </div>
+    <template id="login">
+        <div>
+            <h3>登录</h3>
+            <router-link to="/hasregi">/hasregi</router-link>
+        </div>
+    </template>
+    <template id="hasregi">
+        <div>
+            <h3>登录后的界面</h3>
+        </div>
+    </template>
+    <script src="./js/vue.js"></script>
+    <script src="./js/vuerouter.js"></script>
+    <script>
+        Vue.use(VueRouter);
+
+        let login = {
+            template:'#login'
+        }
+
+        let hasregi = {
+            template:'#hasregi'
+        }
+        
+        const router = new VueRouter({
+            routes: [
+                {
+                    path:'/',
+                    component:login
+                },
+                {
+                    path:'/hasregi',
+                    component:hasregi
+                }
+            ]
+        })
+
+        //全局的后置守卫
+        //可以做一些用户友好提示
+        router.afterEach((to,from)=>{
+            if(to.path === '/hasregi'){
+                alert('确定进入吗')
+            }
+        })
+
+        new Vue({
+            el:'#app',
+            router
+        })
+    </script>
+</body>
+</html>

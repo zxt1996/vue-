@@ -44,6 +44,7 @@
             //而action则用于实现异步变更。
             //Action 提交的是 mutation，而不是直接变更状态。
             actions:{
+                //接受一个与 store 实例具有相同方法和属性的 context 对象，因此你可以调用 context.commit 提交一个 mutation
                 getMessages(context){
                     fetch('https://api.coindesk.com/v1/bpi/currentprice.json')
                         .then((res)=>res.json())

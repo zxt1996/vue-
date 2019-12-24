@@ -13,6 +13,7 @@
     <template id="myto">
         <div>
             <h2>顺利跳转时的对象</h2>
+            <router-link to="/four">/four</router-link>
         </div>
     </template>
 
@@ -37,10 +38,19 @@
             <button @click="forlogin">登录</button>
         </div>
     </template>
+
+    <template id="four">
+        <div>
+            <h3>通过路由独享守卫跳转的界面</h3>
+        </div>
+    </template>
     <script src="./js/vue.js"></script>
     <script src="./js/vuerouter.js"></script>
     <script>
         Vue.use(VueRouter);
+        let four = {
+            template:'#four'
+        }
         let myfrom = {
             template:'#myfrom',
             name:'myfrom',
@@ -109,7 +119,7 @@
                 {
                     path:'/myto',
                     component:myto,
-                    name:'myto'
+                    name:'myto',
                 },
                 {
                     path:'/mynext',
@@ -118,6 +128,23 @@
                 {
                     path:'/login',
                     component:login
+                },
+                {
+                    path:'/four',
+                    component:four,
+                    //路由独享守卫
+                    beforeEnter: (to, from, next) => {
+                        const name = localStorage.getItem('name')
+                        if(name){
+                            alert('你要确定要跳转到/four吗');
+                            next();
+                        }else{
+                            alert('您还没有登录账号，3秒后自动跳转到登录页');
+                            setTimeout(()=>{
+                                next('/login')
+                            },3000)
+                        }
+                    }
                 }
             ]
         });
