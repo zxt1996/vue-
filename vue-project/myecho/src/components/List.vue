@@ -59,7 +59,7 @@ export default {
   padding: 0;
 }
 .listcontent{
-  margin-bottom: 12%;
+  margin-bottom: 25%;
 }
  h4{
     overflow: hidden;

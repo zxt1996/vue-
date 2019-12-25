@@ -7,7 +7,13 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
     songlist:[],
-    myaudio:[]
+    myaudio:[],
+    // audiolist:{
+    //   data:null,
+    //   play:false,
+    //   duration:0,
+    //   currentTime:0
+    // }
   },
   mutations: {
     changedata:(state,datas)=>{
@@ -21,8 +27,17 @@ export default new Vuex.Store({
             ]);
           state.myaudio.push(el.sound.source);
           }
-        })
-    }
+        });
+    },
+    // set_audio_data:(state,datas)=>{
+    //   state.audiolist.data = state.audiolist.myaudio[datas];
+    // },
+    // set_audio_duration:(state,datas)=>{
+    //   state.audiolist.duration = state.audiolist.myaudio[datas];
+    // },
+    // set_audio_currentTime:(state,datas)=>{
+    //   state.audiolist.currentTime = datas;
+    // }
   },
   actions: {
     getMessages(context,url){

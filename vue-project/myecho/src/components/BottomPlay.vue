@@ -13,9 +13,12 @@
                 <a-icon type="play-circle" v-show="realyplay"/>
                 <a-icon type="pause-circle" v-show="!realyplay"/>
             </span>
-            <span><a-icon type="forward" /></span>
+            <span @click="nextsong"><a-icon type="forward" /></span>
         </div>
-        <audio id='audio' autoplay="autoplay" :src="myaudio[0]" v-if="!realyplay"></audio>
+        <div class="myprogress">
+            <a-progress :percent="percenttime" />
+        </div>
+        <audio id='audio' autoplay="autoplay" :src="myaudio[nowsong]"></audio>
     </div>
 </template>
 
@@ -27,25 +30,69 @@ export default {
         return {
             wheather:false,
             realyplay:false,
-            nowsong:0
+            nowsong:0,
+            nowaudio:'',
+            duration:0,
+            currenttime:0,
+            percenttime:0,
+            playalltime:0,
+            fordata:''
         }
+    },
+    mounted() {
+        this.nowaudio = document.querySelector('#audio');
+        this.nowaudio.addEventListener("playing",()=>{
+            this.currenttime = this.nowaudio.currentTime;
+            this.duration = this.nowaudio.duration;
+            this.percenttime = parseInt(this.currenttime/this.duration*100);
+        },false)
+        //播放结束时触发
+        this.nowaudio.addEventListener("ended",()=>{
+            if(this.nowsong < this.myaudio.length){
+                this.nowsong++; 
+            }else{
+                this.nowsong = 0;
+            }
+        })
     },
     computed:{
         ...mapState({
             songlist:'songlist',
-            myaudio:'myaudio'
-        })
+            myaudio:'myaudio',
+        }),
     },
     methods:{
         ...mapMutations({
-            changedata:'changedata'
+            changedata:'changedata',
         }),
         ...mapActions({
             getMessages:'getMessages'
         }),
         myplay(){
             this.realyplay = !this.realyplay;
+            if(!this.realyplay){
+                this.nowaudio.play();
+                this.fordata = window.setInterval(()=>{
+                     this.currenttime = this.nowaudio.currentTime;
+                     this.duration = this.nowaudio.duration;
+                    this.percenttime = parseInt(this.currenttime/this.duration*100);
+                    console.log(this.percenttime);
+                },500);
+            }else{
+                this.nowaudio.pause();
+                window.clearInterval(this.fordata);
+            }
+        },
+        nextsong(){
+            if(this.nowsong < this.myaudio.length){
+                this.nowsong++; 
+            }else{
+                this.nowsong = 0;
+            }
         }
+    },
+    beforeDestroy(){
+        clearInterval(this.fordata);
     }
 }
 </script>
@@ -58,6 +105,7 @@ export default {
     background-color: white;
     justify-content: space-between;
     align-items: center;
+    flex-wrap: wrap;
     height: 12%;
     .botimg{
         width:22%;
@@ -70,7 +118,7 @@ export default {
         }
     }
     .botplaymid{
-        width: 40%;
+        width: 120px;
         display: flex;
         flex-direction: column;
         .bpmone{
@@ -89,6 +137,11 @@ export default {
         display: flex;
         justify-content: space-around;
         margin-right: 10px;
+    }
+    .myprogress{
+        position: absolute;
+        top: -14px;
+        width: 100%;
     }
 } 
 </style>

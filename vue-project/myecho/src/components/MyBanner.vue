@@ -42,10 +42,6 @@ export default {
     overflow: hidden;
   }
 
-  /* .ant-carousel >>> .slick-dots {
-    display: none !important;
-  } */
-
   .banner >>> img{
     width: 100%;
     height: 100%; 
