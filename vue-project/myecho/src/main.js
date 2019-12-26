@@ -8,7 +8,7 @@ import '@/mock'
 
 //按需引入ant-design的组件
 import 'ant-design-vue/dist/antd.css';
-import { Carousel,Row,Col,Button,Affix,Icon,Progress } from 'ant-design-vue';
+import { Carousel,Row,Col,Button,Affix,Icon,Progress,Drawer } from 'ant-design-vue';
 Vue.use(Carousel);
 Vue.use(Row);
 Vue.use(Col);
@@ -16,6 +16,7 @@ Vue.use(Button);
 Vue.use(Affix);
 Vue.use(Icon);
 Vue.use(Progress);
+Vue.use(Drawer);
 
 
 Vue.config.productionTip = false
