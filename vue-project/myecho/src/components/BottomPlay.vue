@@ -33,7 +33,10 @@
                 <div class="drawertitle">
                     <span>清空</span>
                     <span>播放列表({{myaudio.length}}首)</span>
-                    <span class="moreclass"><a-icon type="exclamation" /></span>
+                    <span class="moreclass" @click="changemodes">
+                        <a-icon type="exclamation" v-if="formode"/>
+                        <a-icon type="fullscreen" v-if="!formode"/>
+                    </span>
                 </div>
                 <br>
                 <div class="forscroll">
@@ -74,6 +77,7 @@ export default {
             fordata:'',
             visible: false,
             placement: 'bottom',
+            formode:true
         }
     },
     mounted() {
@@ -85,10 +89,14 @@ export default {
         },false)
         //播放结束时触发
         this.nowaudio.addEventListener("ended",()=>{
-            if(this.nowsong < this.myaudio.length){
-                this.nowsong++; 
+            if(this.playmode == 'default'){
+                if(this.nowsong < this.myaudio.length){
+                    this.nowsong++; 
+                }else{
+                    this.nowsong = 0;
+                }
             }else{
-                this.nowsong = 0;
+                this.nowsong = Math.floor(Math.random()*this.myaudio.length);
             }
         });
     },
@@ -96,11 +104,13 @@ export default {
         ...mapState({
             songlist:'songlist',
             myaudio:'myaudio',
+            playmode:'playmode'
         }),
     },
     methods:{
         ...mapMutations({
             changedata:'changedata',
+            changemode:'changemode'
         }),
         ...mapActions({
             getMessages:'getMessages'
@@ -148,6 +158,14 @@ export default {
         },
         deletesong(mydata){
             this.songlist.splice(mydata,1);
+        },
+        changemodes(){
+            this.formode = !this.formode;
+            if(!this.formode){
+                this.changemode('sequeu');
+            }else{
+                this.changemode('default');
+            }
         }
     },
     beforeDestroy(){

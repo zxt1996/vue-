@@ -8,12 +8,8 @@ export default new Vuex.Store({
   state: {
     songlist:[],
     myaudio:[],
-    // audiolist:{
-    //   data:null,
-    //   play:false,
-    //   duration:0,
-    //   currentTime:0
-    // }
+    playmode:'default',
+    formode:''
   },
   mutations: {
     changedata:(state,datas)=>{
@@ -29,15 +25,9 @@ export default new Vuex.Store({
           }
         });
     },
-    // set_audio_data:(state,datas)=>{
-    //   state.audiolist.data = state.audiolist.myaudio[datas];
-    // },
-    // set_audio_duration:(state,datas)=>{
-    //   state.audiolist.duration = state.audiolist.myaudio[datas];
-    // },
-    // set_audio_currentTime:(state,datas)=>{
-    //   state.audiolist.currentTime = datas;
-    // }
+    changemode:(state,mode)=>{
+      state.playmode = mode;
+    }
   },
   actions: {
     getMessages(context,url){
