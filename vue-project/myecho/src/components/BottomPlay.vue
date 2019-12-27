@@ -133,7 +133,7 @@ export default {
             }
         },
         nextsong(){
-            if(this.nowsong < this.myaudio.length){
+            if(this.nowsong < this.myaudio.length-1){
                 this.nowsong++; 
             }else{
                 this.nowsong = 0;
