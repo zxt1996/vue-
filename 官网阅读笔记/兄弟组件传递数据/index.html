@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        <one></one>
+        <two></two>
+    </div>
+
+    <template id="one">
+        <div v-on:click="on">
+            one组件
+        </div>
+    </template>
+
+    <template id="two">
+        <div>
+            {{datas}}
+       </div>
+    </template>
+    <script src="./js/vue.js"></script>
+    <script>
+        let one = {
+            template:'#one',
+            data() {
+                return {
+                    datas:'one的数据'
+                }
+            },
+            methods: {
+                on(){
+                    //this.$root当前组件树的根 Vue 实例。如果当前实例没有父实例，此实例将会是其自己。
+                    this.$root.eventHub.$emit('eventName',this.datas);
+                }
+            },
+        }
+
+        let two = {
+            template:'#two',
+            data() {
+                return {
+                    datas:''
+                }
+            },
+            created() {
+                this.$root.eventHub.$on("eventName",(tar)=>{
+                    this.fn(tar);
+                })
+            },
+            methods: {
+                fn(tar){
+                    this.datas = tar;
+                }
+            },
+        }
+        new Vue({
+            el:'#app',
+            data() {
+                return {
+                    //设置所有组件都能调用
+                    eventHub:new Vue()
+                }
+            },
+            components:{
+                one,
+                two
+            }
+        })
+    </script>
+</body>
+</html>
