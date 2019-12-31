@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <style>
+        .scroll{
+            position: fixed;
+            right: 10px;
+            bottom: 60px;
+            width: 45px;
+            height: 90px;
+            cursor: pointer;
+            display: none;
+        }
+        .scroll>div{
+            width: 45px;
+            height: 45px;
+            transform: rotate(90deg);
+            line-height: 45px;
+            text-align: center;
+            font-size: 35px;
+            font-family: "黑体";
+            background-color: rgba(0,0,0,.2);
+            color: #fff;
+        }
+        .scroll>div:hover{
+            background-color: rgba(0,0,0,.5);
+        }
+        .show{
+            display: block;
+        }
+    </style>
+    <div id="app">
+        <div>
+            <div class="scroll" :class="{show:isActive}">
+                <div id="toTop" @click="toTop(step)">&lt;</div>
+                <div id="toBottom" @click="toBottom(step)">&gt;</div>
+            </div>
+            <div>
+                <img src="./img/jojo.jpg" alt="">
+            </div>
+            <div>
+                <img src="./img/jojo.jpg" alt="">
+            </div>
+        </div>
+    </div>
+    <script src="./js/vue.js"></script>
+    <script>
+        new Vue({
+            el:'#app',
+            data() {
+                return {
+                    isActive:false,
+                    step:50
+                }
+            },
+            methods:{
+                toTop(i){
+                    //参数i表示间隔的幅度大小，以此来控制速度
+                    //属性 scrollLeft/scrollTop 是元素隐藏、滚动部分的宽度/高度。
+                    //将 scrollTop 设置为 0 或 Infinity 将使元素分别滚动到顶部/底部。
+                    document.documentElement.scrollTop-=i;
+                    if (document.documentElement.scrollTop>0) {
+                        var c=setTimeout(()=>this.toTop(i),16);
+                    }else {
+                        clearTimeout(c);
+                    }
+                },
+                toBottom(i){
+                    //clientWidth/clientHeight — 内容的宽度/高度，包括内间距，但没有滚动条。
+                    var clientHeight=document.documentElement.clientHeight||document.body.clientHeight;
+                    //scrollWidth/scrollHeight — 内容的宽度/高度，包括可滚动的可视区域外的尺寸，也包括内间距，但不包括滚动条。
+                    var scrollHeight=document.documentElement.scrollHeight;
+                    var height=scrollHeight-clientHeight; //超出窗口上界的值就是底部的scrolTop的值
+                    document.documentElement.scrollTop+=i;
+                    if (document.documentElement.scrollTop<height) {
+                        var c=setTimeout(()=>this.toBottom(i),16);
+                    }else {
+                        clearTimeout(c);
+                    }
+                }
+            },
+            created(){
+                var vm=this;
+                window.onscroll=function(){
+                    if (document.documentElement.scrollTop>60) {
+                        vm.isActive=true;
+                    }else {
+                        vm.isActive=false;
+                    }
+                }
+            }
+        })
+    </script>
+</body>
+</html>
