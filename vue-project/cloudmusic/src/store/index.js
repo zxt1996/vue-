@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+// import api from '../api/index'
 
 Vue.use(Vuex)
 
@@ -12,7 +13,8 @@ export default new Vuex.Store({
       avatarurl:'',
       backgroundurl:'',
     },
-    sidevisible:false
+    sidevisible:false,
+    tempphone:''
   },
   mutations: {
     showDrawer(state) {
@@ -21,6 +23,9 @@ export default new Vuex.Store({
     onClose(state) {
       state.sidevisible = false;
     },
+    posttempphone(state,data){
+      state.tempphone = data;
+    }
   },
   actions: {
   },

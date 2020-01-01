@@ -24,6 +24,11 @@ export default {
     //验证手机号是否已经注册
     getverifyphone(phone){
         let data = resource.VerifyPhone + '?phone=' + phone;
-        return axios.get(resource.VerifyPhone);
+        return axios.get(data);
+    },
+    //手机登录
+    getphonelogin(phone,password){
+        let data = resource.PhoneLogin + '?phone=' + phone +'&password=' + password;
+        return axios.get(data);
     }
 }

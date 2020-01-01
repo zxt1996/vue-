@@ -23,7 +23,18 @@ const routes = [
   {
     path:'/phonelogin',//手机号登录
     name:'phonelogin',
-    component:()=>import('../views/Phonelogin.vue')
+    component:()=>import('../views/Phonelogin.vue'),
+    redirect:'/phonelogin/getphone',
+    children:[
+      {
+        path:'getphone',
+        component:()=>import('../components/getphone.vue')
+      },
+      {
+        path:'getpassword',
+        component:()=>import('../components/getpassword.vue')
+      }
+    ]
   }
 ]
 
