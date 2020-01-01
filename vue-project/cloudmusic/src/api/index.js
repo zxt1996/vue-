@@ -20,5 +20,10 @@ export default {
     getnewmv(){
         let data = resource.PersonalizedMv;
         return axios.get(data);
+    },
+    //验证手机号是否已经注册
+    getverifyphone(phone){
+        let data = resource.VerifyPhone + '?phone=' + phone;
+        return axios.get(resource.VerifyPhone);
     }
 }

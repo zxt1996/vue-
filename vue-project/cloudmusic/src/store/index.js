@@ -11,9 +11,16 @@ export default new Vuex.Store({
       nickname:'',
       avatarurl:'',
       backgroundurl:'',
-    }
+    },
+    sidevisible:false
   },
   mutations: {
+    showDrawer(state) {
+      state.sidevisible = true;
+    },
+    onClose(state) {
+      state.sidevisible = false;
+    },
   },
   actions: {
   },
