@@ -1,11 +1,11 @@
 <template>
     <div class="newsongmv">
         <div class="newsongmvhead">
-            <div>
+            <div class="songandmv">
                 <span @click="myswitch('song')">新歌</span>
                 <span @click="myswitch('mv')">新MV</span>
             </div>
-            <div>
+            <div class="forwhorecommend">
                 <span>{{whorecommend}}</span>
             </div>
         </div>
@@ -16,7 +16,7 @@
             v-for="nowlist in foruser"
             :key="nowlist.id"
             >
-            <div class="nowimg">
+            <div class="nowimgtwo">
                 <img :src="nowlist.picUrl">
                 <h5>{{nowlist.name}}</h5>
             </div>
@@ -67,7 +67,7 @@ export default {
         display: flex;
         justify-content: space-between;
         margin: 5% 5%;
-        >div:first-of-type{
+        .songandmv{
             width: 22%;
             >span{
                 width: 10%;
@@ -76,7 +76,7 @@ export default {
                 margin-right: 10%;
             }
         }
-        > div:last-of-type{
+        .forwhorecommend{
             width: 20%;
             padding: 1px 2%;
             border: 1px solid gray;
@@ -85,14 +85,14 @@ export default {
         }
     }
     .everypernewsongmv{
-        .nowimg{
+        .nowimgtwo{
             height: 30%;
             >img{
                 width: 100%;
                 height: 100%;
                 margin-bottom: 5%;
             }
-            h5{
+            >h5{
                 overflow: hidden;
                 text-overflow: ellipsis;
                 white-space: nowrap;

@@ -45,6 +45,7 @@ import Header from '@/components/header.vue'
 import Banner from '@/components/banner.vue'
 import Personalized from '@/components/personalized.vue'
 import Newsong from '@/components/newsong.vue'
+import {mapMutations} from 'vuex'
 
 export default {
   name: 'home',
@@ -53,6 +54,16 @@ export default {
     Banner,
     Personalized,
     Newsong
+  },
+  methods: {
+    ...mapMutations([
+            'createuser'
+        ]),
+  },
+  created(){
+    if(localStorage['cloudmusic']){
+      this.createuser(JSON.parse(localStorage['cloudmusic']));
+    }
   }
 }
 </script>

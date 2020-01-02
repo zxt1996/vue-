@@ -29,6 +29,22 @@ export default {
     //手机登录
     getphonelogin(phone,password){
         let data = resource.PhoneLogin + '?phone=' + phone +'&password=' + password;
+        window.console.log(data);
+        return axios.get(data);
+    },
+    //获取用户的歌单
+    getuserplaylist(uid){
+        let data = resource.UserPlaylist + '?uid=' + uid;
+        return axios.get(data);
+    },
+    //获取歌单详情
+    getplaylistdetail(uid){
+        let data = resource.PlaylistDetail + '?id=' + uid;
+        return axios.get(data);
+    },
+    //获取歌曲详情
+    getsongdetail(ids){
+        let data = resource.SongDetail + '?ids=' + ids;
         return axios.get(data);
     }
 }

@@ -11,7 +11,7 @@
 </template>
 
 
-<style lang="scss" scoped>
+<style lang="scss">
 .nowphonelogin{
     height: vh;
     width: vw;

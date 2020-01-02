@@ -2,19 +2,19 @@
     <div class="personalized">
         <div class="personalizedhead">
             <span>推荐歌单</span>
-            <span>歌单广场</span>
+            <span class="plhtwospan">歌单广场</span>
         </div>
         <div class="everypersonalized">
-            <a-row :gutter="16" style="marginRight:6px;marginLeft:6px;">
+            <a-row :gutter="8" style="marginRight:6px;marginLeft:6px;">
             <a-col
             :span="8"
             v-for="nowlist in personalizedsong"
             :key="nowlist.id"
             >
-            <div class="nowimg">
-                <img :src="nowlist.picUrl">
-                <h5>{{nowlist.name}}</h5>
-            </div>
+                <div class="nowimg">
+                    <img :src="nowlist.picUrl">
+                    <h5>{{nowlist.name}}</h5>
+                </div>
             </a-col>
             </a-row>
         </div>
@@ -30,7 +30,7 @@ export default {
         }
     },
     created(){
-        let data = api.getpersonalized(6);
+        let data = api.getpersonalized(3);
         data.then((res)=>{
             this.personalizedsong = res.data.result;
         })
@@ -45,7 +45,7 @@ export default {
         display: flex;
         justify-content: space-between;
         margin: 5% 5%;
-        > span:last-of-type{
+        .plhtwospan{
             width: 20%;
             padding: 1px 2%;
             border: 1px solid gray;
@@ -68,6 +68,7 @@ export default {
                 -webkit-box-orient: vertical;
                 text-align: left;
                 margin-bottom: 15%;
+                height: 35px;
             }
         }
     }

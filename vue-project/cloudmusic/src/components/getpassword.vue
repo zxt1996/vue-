@@ -3,26 +3,51 @@
         <div class="getuserpassword">
            <div>
                 <span>
-                    <input type="password" placeholder="请输入密码">
+                    <input
+                     type="password"
+                      placeholder="请输入密码"
+                      v-model="getpassword">
                 </span>
                 <span>
                     忘记密码？
                 </span>
            </div>
         </div>
-        <button class="postpassword">登录</button>
+        <button class="postpassword" @click="getusers">登录</button>
     </div>
 </template>
 
 <script>
-// import {mapState,mapMutations} from 'vuex'
+import api from '../api/index'
+import {mapState,mapMutations} from 'vuex'
 export default {
-    // computed: {
-    //     ...mapState([
-    //         'useraccount',
-    //         'tempphone'
-    //     ])
-    // },
+    data(){
+        return {
+            getpassword:'',
+        }
+    },
+    computed: {
+        ...mapState([
+            'tempphone',
+            'useraccount'
+        ])
+    },
+    methods: {
+        ...mapMutations([
+            'createuser'
+        ]),
+        getusers(){
+            api.getphonelogin(this.tempphone,this.getpassword).then((res)=>{
+                window.console.log(res.data.profile.avatarUrl);
+                if(res.data.code == 200){
+                    this.createuser(res);
+                    localStorage['cloudmusic'] = JSON.stringify(res);
+                }
+            })
+            window.console.log(this.useraccount)
+            this.$router.push('/');
+        }
+    },
 }
 </script>
 

@@ -10,7 +10,7 @@
       :visible="sidevisible"
     >
       <div class="lsidehead">
-          <div class="lsideheadone">
+          <div class="lsideheadone" v-if="!useraccount.id">
               <p>登录网易云音乐</p>
               <p>手机电脑多端同步，尽享海量高品质音乐</p>
               <p>
@@ -18,6 +18,16 @@
                     <button class="forlogin">立即登录</button>
                  </router-link>
               </p>
+          </div>
+          <div class="nowuser" v-if="useraccount.id">
+              <div class="userheadimg">
+                  <img :src="useraccount.avatarurl"/>
+              </div>
+              <div class="username">
+                  <span>
+                      {{useraccount.nickname}}
+                  </span>
+              </div>
           </div>
           <ul class="lsidenav">
             <li class="lsideli">
@@ -127,13 +137,14 @@ import {mapState,mapMutations} from 'vuex'
     },
     computed: {
         ...mapState([
-            'sidevisible'
+            'sidevisible',
+            'useraccount'
         ])
     },
   };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .ant-drawer-content-wrapper{
     position: relative;
     width: 80% !important;
@@ -152,6 +163,25 @@ import {mapState,mapMutations} from 'vuex'
                 border: 1px solid gray;
                 border-radius: 20px;
                 outline: none;
+            }
+        }
+        .nowuser{
+            margin-bottom: 10%;
+            .userheadimg{
+                width: 80px;
+                height: 80px;
+                border-radius: 50%;
+                margin-bottom: 5%;
+                >img{
+                    width: 100%;
+                    height: 100%;
+                    border-radius: 50%;
+                }
+            }
+            .username{
+                text-align: left;
+                padding-left: 5%;
+                font-size: 18px;
             }
         }
         .lsidenav{

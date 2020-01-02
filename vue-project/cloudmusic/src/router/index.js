@@ -35,6 +35,11 @@ const routes = [
         component:()=>import('../components/getpassword.vue')
       }
     ]
+  },
+  {
+    path:'/songdetail',//歌单详情
+    name:'songdetail',
+    component:()=>import('../views/Detail.vue'),
   }
 ]
 

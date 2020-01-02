@@ -7,7 +7,9 @@
             <span>
                 <router-link to="/user">我的</router-link>
             </span>
-            <span>发现</span>
+            <span>
+                <router-link to="/">发现</router-link>
+            </span>
             <span>云村</span>
             <span>视频</span>
         </div>
