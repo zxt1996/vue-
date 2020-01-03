@@ -3,6 +3,7 @@
     <Header/>
     <Userback/>
     <Mylovesong/>
+    <Bottomplay v-if="playsongdata.whetherbottom"/>
   </div>
 </template>
 
@@ -10,14 +11,25 @@
 import Header from '@/components/header.vue'
 import Userback from '@/components/userback.vue'
 import Mylovesong from '@/components/mylovesong.vue'
+import {mapState} from 'vuex'
+import Bottomplay from '@/components/bottomplay.vue'
 
 export default {
   name:'user',
   components:{
     Header,
     Userback,
-    Mylovesong
-  }
+    Mylovesong,
+    Bottomplay
+  },
+  mounted() {
+    window.console.log(this.playsongdata.whetherplay)
+  },
+  computed: {
+        ...mapState([
+            'playsongdata'
+        ])
+    },
 }
 </script>
 

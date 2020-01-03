@@ -28,7 +28,7 @@
             </div>
             <div><i class="iconfont icon-msnui-more"></i></div>
         </div>
-        <Bottomplay v-if="myplay" :canplay="myplay"/>
+        <Bottomplay v-if="playsongdata.whetherbottom" />
     </div>
 </template>
 
@@ -79,7 +79,9 @@ export default {
             'getlist',
             'getwho',
             'getplay',
-            'getsongdetail'
+            'getsongdetail',
+            'getsongposition',
+            'getwhetherbottom'
         ]),
         ...mapActions([
             'getsong'
@@ -88,14 +90,9 @@ export default {
         playsong(data){
             this.getwho(data);
             this.myplay = !this.myplay;
-            api.getsongdetail(this.detaillist[data].id).then((datas)=>{
-                let songurl = 'https://music.163.com/song/media/outer/url?id=' + datas.data.songs[0].id + '.mp3';
-                this.myaudio.push(songurl);
-                this.getwho(songurl)
-            });
             this.getplay(this.myplay);
-            window.console.log(this.myaudio,this.playsongdata.list)
-            window.console.log(this.playsongdata.nowwho,this.playsongdata.list[this.playsongdata.nowwho])
+            this.getwhetherbottom(this.myplay);
+            this.getsongposition(data);
         },
         backbefore(){
             this.$router.go(-1);

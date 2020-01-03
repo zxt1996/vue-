@@ -17,10 +17,12 @@ export default new Vuex.Store({
     tempphone:'',
     playlistdetailuid:null,
     playsongdata:{
-      list:[],
-      nowwho:null,
-      whetherplay:false,
-      songdetail:[]
+      list:[],//播放的歌曲列表
+      nowwho:null,//目前播放的歌曲
+      whetherplay:false,//是否播放
+      songdetail:[],
+      songposition:null,//播放的歌曲位置
+      whetherbottom:false//播放组件是否存在
     }
   },
   mutations: {
@@ -53,19 +55,15 @@ export default new Vuex.Store({
     },
     getsongdetail(state,data){
       state.playsongdata.songdetail = data;
+    },
+    getsongposition(state,data){
+      state.playsongdata.songposition = data;
+    },
+    getwhetherbottom(state,data){
+      state.playsongdata.whetherbottom = data;
     }
   },
   actions: {
-    // getsong({context,state}){
-    //   let temp = [];
-    //   state.playsongdata.songdetail.forEach((el)=>{
-    //     api.getsongdetail(el.id).then((data)=>{
-    //         let songurl = 'https://music.163.com/song/media/outer/url?id=' + data.data.songs[0].id + '.mp3';
-    //         temp.push(songurl);
-    //     })
-    //   })
-    // context.commit('getlist',temp)
-    // }
   },
   modules: {
   }

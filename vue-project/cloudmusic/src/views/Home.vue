@@ -53,8 +53,13 @@ export default {
     Header,
     Banner,
     Personalized,
-    Newsong
+    Newsong,
   },
+  // computed: {
+  //   ...mapState([
+  //           'playsongdata'
+  //       ])
+  // },
   methods: {
     ...mapMutations([
             'createuser'
