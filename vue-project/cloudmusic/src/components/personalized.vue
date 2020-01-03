@@ -44,6 +44,7 @@ export default {
         ]),
         todetail(data){
             this.pldetailuid(data);
+            window.console.log(data);
             this.$router.push('/songdetail')
         }
     },

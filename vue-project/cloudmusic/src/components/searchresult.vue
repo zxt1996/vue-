@@ -29,37 +29,62 @@ import api from '../api/index'
 export default {
     data() {
         return {
-            searchcontent:[]
+            searchcontent:[],
+            allresult:[],
+            resultlist:[],
+            nowsongposition:null//当前要播放的歌曲在列表所处位置
         }
     },
     computed: {
         ...mapState([
             'search',
-            'onlynowsong'
+            'onlynowsong',
+            'playsongdata'
         ])
     },
     created() {
         api.getSongSearch(this.search.nowsearch).then((res)=>{
             this.searchcontent = res.data.result.songs;
             window.console.log(this.searchcontent);
-            // this.searchcontent.forEach((el,index)=>{
-            //     window.console.log(el.songs[index].id);
-            // })
+            this.searchcontent.forEach((el)=>{
+                this.allresult.push(el.id);
+            })
+            window.console.log(this.allresult);
         })
     },
     methods: {
         ...mapMutations([
-            'changeonlynowsong'
+            'changeonlynowsong',
+            'getlist',
+            'getwho',
+            'getplay',
+            'getsongdetail',
+            'getsongposition',
+            'getwhetherbottom'
         ]),
         toplay(sc){
             window.console.log(sc);
-            api.getsongdetail(sc.id).then((res)=>{
-                window.console.log(res.data.songs[0])
-                this.changeonlynowsong(res.data.songs[0]);
-                window.console.log(this.onlynowsong)
+            this.allresult.forEach(data=>{
+                let temp = 'https://music.163.com/song/media/outer/url?id=' + data + '.mp3';
+                this.resultlist.push(temp);
             })
+            api.getsongdetail(sc.id).then((res)=>{
+                this.changeonlynowsong(res.data.songs[0]);
+                this.nowsongposition = this.allresult.indexOf(res.data.songs[0].id);
+                window.console.log(this.onlynowsong,this.nowsongposition)
+                //设置播放的歌曲
+                this.getwho(this.resultlist[this.nowsongposition]);
+                //设置要播放的列表
+                this.getlist(this.resultlist);
+                //设置当前的位置
+                this.getsongposition(this.nowsongposition);
+                //设置播放组件是否存在
+                this.getwhetherbottom(true);
+                window.console.log(this.playsongdata)
+            })
+            window.console.log(this.allresult);
             this.$router.push('/play');
-        }
+        },
     },
 }
 </script>

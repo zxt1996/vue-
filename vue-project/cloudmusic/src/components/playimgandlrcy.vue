@@ -22,7 +22,7 @@ export default {
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-top: 20px;
+    flex-grow: 1;
     >div{
         width: 250px;
         height: 250px;
