@@ -23,7 +23,13 @@ export default new Vuex.Store({
       songdetail:[],
       songposition:null,//播放的歌曲位置
       whetherbottom:false//播放组件是否存在
-    }
+    },
+    search:{
+      history:[],
+      nowsearch:null,
+      color:["pink","red","orange","green","cyan","blue","purple"],
+    },
+    onlynowsong:null
   },
   mutations: {
     showDrawer(state) {
@@ -61,6 +67,18 @@ export default new Vuex.Store({
     },
     getwhetherbottom(state,data){
       state.playsongdata.whetherbottom = data;
+    },
+    //关于搜索的方法
+    changesearch(state,data){
+      state.search.nowsearch = data;
+      if(state.search.history.length < 7){
+        if(state.search.history.indexOf(data) == -1){
+          state.search.history.push(data);
+        }
+      }
+    },
+    changeonlynowsong(state,data){
+      state.onlynowsong = data;
     }
   },
   actions: {

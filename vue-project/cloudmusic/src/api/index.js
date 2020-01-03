@@ -46,5 +46,15 @@ export default {
     getsongdetail(ids){
         let data = resource.SongDetail + '?ids=' + ids;
         return axios.get(data);
+    },
+    //获取热搜列表
+    getSearchHotdetail(){
+        let data = resource.SearchHotdetail;
+        return axios.get(data);
+    },
+    //搜索
+    getSongSearch(keywords){
+        let data = resource.SongSearch + '?keywords=' + keywords;
+        return axios.get(data);
     }
 }

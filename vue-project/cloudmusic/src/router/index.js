@@ -8,7 +8,7 @@ const routes = [
   {
     path: '/',
     name: 'home',
-    component: Home
+    component: Home,
   },
   {
     path:'/user',//用户详情页
@@ -40,6 +40,27 @@ const routes = [
     path:'/songdetail',//歌单详情
     name:'songdetail',
     component:()=>import('../views/Detail.vue'),
+  },
+  {
+    path:'/search',//歌单搜索
+    name:'search',
+    component:()=>import('../views/Search.vue'),
+    redirect:'/search/hotandhistory',
+    children:[
+      {
+        path:'hotandhistory',
+        component:()=>import('../components/mysearch.vue')
+      },
+      {
+        path:'searchresult',
+        component:()=>import('../components/searchresult.vue')
+      }
+    ]
+  },
+  {
+    path:'/play',
+    name:'play',
+    component:()=>import('../views/Play.vue'),
   }
 ]
 

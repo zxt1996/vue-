@@ -11,7 +11,7 @@
             v-for="nowlist in personalizedsong"
             :key="nowlist.id"
             >
-                <div class="nowimg">
+                <div class="nowimg" @click="todetail(nowlist)">
                     <img :src="nowlist.picUrl">
                     <h5>{{nowlist.name}}</h5>
                 </div>
@@ -23,6 +23,8 @@
 
 <script>
 import api from '../api/index'
+import {mapMutations} from 'vuex'
+
 export default {
     data(){
         return {
@@ -33,8 +35,19 @@ export default {
         let data = api.getpersonalized(3);
         data.then((res)=>{
             this.personalizedsong = res.data.result;
+            window.console.log(this.personalizedsong);
         })
-    }
+    },
+    methods: {
+        ...mapMutations([
+            'pldetailuid'
+        ]),
+        todetail(data){
+            this.pldetailuid(data);
+            this.$router.push('/songdetail')
+        }
+    },
+    
 }
 </script>
 

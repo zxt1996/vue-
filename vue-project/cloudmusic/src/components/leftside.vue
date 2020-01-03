@@ -108,7 +108,7 @@
                 <a href="/">
                 <i class="iconfont icon-tuichu2"></i>
                 </a>
-                <span>退出</span>
+                <span @click="nologin">退出</span>
             </li>
         </ul>
       </div>
@@ -134,6 +134,9 @@ import {mapState,mapMutations} from 'vuex'
         myonClose() {
             this.onClose();
         },
+        nologin(){
+            localStorage.clear();
+        }
     },
     computed: {
         ...mapState([

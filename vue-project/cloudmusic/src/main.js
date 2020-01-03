@@ -9,7 +9,10 @@ import {
   Row,
   Col,
   Button,
-  Drawer } from 'ant-design-vue'
+  Drawer,
+  Input,
+  Tag,
+  Slider } from 'ant-design-vue'
 import './assets/reset.css'
 
 Vue.config.productionTip = false
@@ -20,6 +23,9 @@ Vue.use(Row);
 Vue.use(Col);
 Vue.use(Button);
 Vue.use(Drawer);
+Vue.use(Input);
+Vue.use(Tag);
+Vue.use(Slider);
 
 new Vue({
   router,

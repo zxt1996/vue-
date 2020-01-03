@@ -13,7 +13,7 @@
             <span>云村</span>
             <span>视频</span>
         </div>
-        <div class="headersearch">
+        <div class="headersearch" @click="tosearch">
             <a-icon type="search" />
         </div>
         <Leftside/>
@@ -28,7 +28,10 @@ export default {
     methods:{
         ...mapMutations([
             'showDrawer'
-        ])
+        ]),
+        tosearch(){
+            this.$router.push('/search');
+        }
     },
     components:{
         Leftside
