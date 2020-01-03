@@ -7,14 +7,14 @@
         </div>
         <div class="playmodemid">
             <span><a-icon type="step-backward" /></span>
-            <span>
-                <a-icon type="play-circle" v-show="!play"/>
-                <a-icon type="pause-circle" v-show="play"/>
+            <span @click="myplay">
+                <a-icon type="play-circle" v-show="!whetherplay"/>
+                <a-icon type="pause-circle" v-show="whetherplay"/>
             </span>
             <span><a-icon type="step-forward" /></span>
         </div>
         <div class="playmodebottom"><a-icon type="menu-unfold" /></div>
-        <audio ref="myaudio" preload="none" :src="playsongdata.nowwho"></audio>
+        <audio ref="myaudio" autoplay></audio>
     </div>
 </template>
 
@@ -30,24 +30,11 @@ export default {
     data() {
         return {
             nowmode:1,
-            play:false
+            whetherplay:true
         }
     },
     mounted() {
-        window.console.log(this.playsongdata)
-        let audio = document.querySelector('#audio');
-        audio.play();
-        // this.$refs.myaudio.src = this.playsongdata.nowwho;
-        //  var playPromise = audio.play();
-
-        // if (playPromise !== undefined) {
-        //     playPromise.then(res => {
-        //     window.console.log(res);
-        //     })
-        //     .catch(error => {
-        //     window.console.error(error);
-        //     });
-        // }
+        this.$refs.myaudio.src = this.playsongdata.nowwho;
     },
     methods: {
         nextmode(){
@@ -56,6 +43,16 @@ export default {
             }else{
                 this.nowmode = 1;
             }
+        },
+        myplay(){
+            let audio = this.$refs.myaudio;
+            this.whetherplay = !this.whetherplay;
+            if(audio.paused){
+                audio.play();
+            }else{
+                audio.pause();
+            }
+            window.console.log("是否播放")
         }
     },
 }

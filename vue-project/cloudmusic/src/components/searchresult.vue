@@ -81,9 +81,10 @@ export default {
                 //设置播放组件是否存在
                 this.getwhetherbottom(true);
                 window.console.log(this.playsongdata)
+                this.$router.push('/play');
             })
             window.console.log(this.allresult);
-            this.$router.push('/play');
+            
         },
     },
 }
