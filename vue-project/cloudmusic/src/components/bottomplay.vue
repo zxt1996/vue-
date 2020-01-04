@@ -21,6 +21,7 @@
         <audio
          id='audio'
            :src="playsongdata.nowwho"
+           ref="myaudio"
             autoplay></audio>
     </div>
 </template>
@@ -44,16 +45,14 @@ export default {
         ...mapState([
             'playsongdata'
         ]),
-        // myplay:([
-        //     'this.playsongdata.whetherplay'
-        // ])
     },
     created() {
         this.songlist = this.playsongdata.songdetail[this.playsongdata.nowwho];
         this.myplay = this.playsongdata.whetherplay;
     },
     mounted() {
-        let audio = document.querySelector('#audio');
+        let audio = this.$refs.myaudio;
+        // let audio = document.querySelector('#audio');
         let nowdata = this.playsongdata.songposition;
         api.getsongdetail(this.playsongdata.list[nowdata])
             .then((datas)=>{

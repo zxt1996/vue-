@@ -56,5 +56,10 @@ export default {
     getSongSearch(keywords){
         let data = resource.SongSearch + '?keywords=' + keywords;
         return axios.get(data);
+    },
+    //获取歌词
+    getlyric(id){
+        let data = 'https://api.imjad.cn/cloudmusic/?type=lyric&id=' + id;
+        return axios.get(data);
     }
 }

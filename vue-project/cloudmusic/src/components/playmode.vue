@@ -40,6 +40,11 @@ export default {
             mysetInterval:null
         }
     },
+    created() {
+        //获取歌词
+        let lyricid = this.playsongdata.songid[this.playsongdata.songposition];
+        this.forlyric(lyricid);
+    },
     mounted() {
         this.$refs.myaudio.src = this.playsongdata.nowwho;
         let audio = this.$refs.myaudio;
@@ -71,7 +76,6 @@ export default {
                     //播放时长所占比例
                     let percenttime = parseInt(currenttime/duration*100);
                     this.getpercenttime(percenttime);
-                    window.console.log(this.playsongdata.percenttime);
                 }
             },2000)
         });
@@ -83,7 +87,8 @@ export default {
             'getwho',
             'changeonlynowsong',
             'getsongtime',
-            'getpercenttime'
+            'getpercenttime',
+            'getlyric'
         ]),
         nextmode(){
             if(this.nowmode != 3){
@@ -109,6 +114,8 @@ export default {
         //下一首
         nextsong(num){
             //设置下一首的位置
+            window.clearInterval(this.mysetInterval);
+            this.getpercenttime(0);
             let nextdata = this.playsongdata.songposition+num;
             if(nextdata<0){
                 nextdata = this.playsongdata.list.length-1;
@@ -119,9 +126,14 @@ export default {
             this.getsongposition(nextdata);   
             this.getwho(this.playsongdata.list[nextdata]);
             this.$refs.myaudio.src = this.playsongdata.nowwho;
+            // let audio = this.$refs.myaudio;
+            // audio.pause();
             api.getsongdetail(this.playsongdata.songid[nextdata]).then(res=>{
                 this.changeonlynowsong(res.data.songs[0]);
                 this.getsongtime(this.temptime);
+                //歌词修改
+                let lyricid = this.playsongdata.songid[this.playsongdata.songposition];
+                this.forlyric(lyricid);
             })
         },
         //转换歌曲时间
@@ -130,8 +142,26 @@ export default {
             let result = mytime.getMinutes() + ':' + mytime.getSeconds();
             window.console.log(result)
             return result;
+        },
+        //获取修改歌词
+        forlyric(lyricid){
+            api.getlyric(lyricid).then((res)=>{
+                let templyric = res.data.lrc.lyric;
+                let temp = templyric.split('\n');
+                // window.console.log(temp);
+                temp.forEach((res,index)=>{
+                    let now = res.split(']');
+                    temp[index] = now[now.length-1];
+                })
+                this.getlyric(temp);
+                // window.console.log(temp);
+            })
         }
     },
+    beforeDestroy(){
+        window.clearInterval(this.mysetInterval);
+        this.mysetInterval = null;
+    }
 }
 </script>
 <style lang="scss" scoped>
@@ -139,6 +169,7 @@ export default {
     display: flex;
     justify-content: space-between;
     padding: 5%;
+    color: white;
     .playmodeone{
         width: 50px;
         >span{

@@ -25,7 +25,9 @@ export default new Vuex.Store({
       whetherbottom:false,//播放组件是否存在,
       songid:[],//歌曲id,
       songtime:null,//歌曲时长
-      percenttime:0//歌曲播放了多少
+      percenttime:0,//歌曲播放了多少
+      playmode:['order','random','single'],//播放模式[顺序，随机，单曲]
+      lyric:null//歌词
     },
     search:{
       history:[],
@@ -79,6 +81,9 @@ export default new Vuex.Store({
     },
     getpercenttime(state,data){
       state.playsongdata.percenttime = data;
+    },
+    getlyric(state,data){
+      state.playsongdata.lyric = data;
     },
     //关于搜索的方法
     changesearch(state,data){

@@ -26,6 +26,7 @@ export default {
     align-items: center;
     >div{
         font-size: 12px;
+        color: white;
     }
     .loader{
         width: 80%;

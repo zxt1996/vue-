@@ -1,10 +1,15 @@
 <template>
-    <div class="play">
-        <Playhead/>
-        <Playimgandlrcy/>
-        <Slideloader/>
-        <Playmode/>
-        <!-- <Bottomplay v-if="playsongdata.whetherbottom"/> -->
+    <div class="plays">
+        <div class="palybackimg"
+        :style="{backgroundImage: 'url(' + onlynowsong.al.picUrl + ')'}">
+        </div>
+        <div class="play">
+            <Playhead/>
+            <Playimgandlrcy/>
+            <Slideloader/>
+            <Playmode/>
+            <!-- <Bottomplay v-if="playsongdata.whetherbottom"/> -->
+        </div>
     </div>
 </template>
 
@@ -26,6 +31,7 @@ export default {
     },
     computed: {
         ...mapState([
+            'onlynowsong',
             'playsongdata'
         ])
     },
@@ -33,11 +39,22 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.play{
-    height: 100vh;
-    width: 100vw;
-    background-color: rgba(107, 8, 2, 0.4);
-    display: flex;
-    flex-direction: column;
+.plays{
+    position: relative;
+    .palybackimg{
+        background-repeat: no-repeat;
+        background-size: 100% 100%;
+        height: 100vh;
+    }
+    .play{
+        height: 100vh;
+        width: 100vw;
+        background-color: rgba(20, 20, 20, 0.6);
+        display: flex;
+        flex-direction: column;
+        position: absolute;
+        top: 0;
+        left: 0;
+    }
 }
 </style>
