@@ -60,7 +60,8 @@ export default {
             'getplay',
             'getsongdetail',
             'getsongposition',
-            'getwhetherbottom'
+            'getwhetherbottom',
+            'getsongid'
         ]),
         toplay(sc){
             window.console.log(sc);
@@ -80,6 +81,8 @@ export default {
                 this.getsongposition(this.nowsongposition);
                 //设置播放组件是否存在
                 this.getwhetherbottom(true);
+                //获取歌曲的id列表
+                this.getsongid(this.allresult);
                 window.console.log(this.playsongdata)
                 this.$router.push('/play');
             })

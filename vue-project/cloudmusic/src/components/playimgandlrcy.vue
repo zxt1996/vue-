@@ -30,7 +30,14 @@ export default {
             width: 100%;
             height: 100%;
             border-radius: 50%;
+            animation:myRotate 15s linear infinite;
         }
     }
+}
+
+@keyframes myRotate{
+    0%{ -webkit-transform: rotate(0deg);}
+    50%{ -webkit-transform: rotate(180deg);}
+    100%{ -webkit-transform: rotate(360deg);}
 }
 </style>

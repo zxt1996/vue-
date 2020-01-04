@@ -12,7 +12,8 @@ import {
   Drawer,
   Input,
   Tag,
-  Slider } from 'ant-design-vue'
+  Slider,
+  Progress } from 'ant-design-vue'
 import './assets/reset.css'
 
 Vue.config.productionTip = false
@@ -26,6 +27,7 @@ Vue.use(Drawer);
 Vue.use(Input);
 Vue.use(Tag);
 Vue.use(Slider);
+Vue.use(Progress);
 
 new Vue({
   router,

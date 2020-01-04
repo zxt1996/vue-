@@ -2,12 +2,23 @@
     <div class="slideloader">
         <div>00:00</div>
          <div class="loader">
-             <a-slider :defaultValue="30"/>
+             <a-progress :percent="playsongdata.percenttime" :showInfo="false" />
          </div>
-         <div>00:00</div>
+         <div>{{playsongdata.songtime}}</div>
     </div>
 </template>
 
+<script>
+import {mapState} from 'vuex'
+
+export default {
+    computed: {
+        ...mapState([
+            'playsongdata'
+        ])
+    },
+}
+</script>
 <style lang="scss" scoped>
 .slideloader{
     padding: 2% 5%;

@@ -22,7 +22,10 @@ export default new Vuex.Store({
       whetherplay:false,//是否播放
       songdetail:[],
       songposition:null,//播放的歌曲位置
-      whetherbottom:false//播放组件是否存在
+      whetherbottom:false,//播放组件是否存在,
+      songid:[],//歌曲id,
+      songtime:null,//歌曲时长
+      percenttime:0//歌曲播放了多少
     },
     search:{
       history:[],
@@ -67,6 +70,15 @@ export default new Vuex.Store({
     },
     getwhetherbottom(state,data){
       state.playsongdata.whetherbottom = data;
+    },
+    getsongid(state,data){
+      state.playsongdata.songid = data;
+    },
+    getsongtime(state,data){
+      state.playsongdata.songtime = data;
+    },
+    getpercenttime(state,data){
+      state.playsongdata.percenttime = data;
     },
     //关于搜索的方法
     changesearch(state,data){
