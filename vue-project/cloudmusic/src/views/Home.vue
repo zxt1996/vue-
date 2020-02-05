@@ -36,7 +36,7 @@
     </ul>
     <Personalized></Personalized>
     <Newsong/>
-    <Bottomplay v-if="playsongdata.whetherbottom"/>
+    <!-- <Bottomplay v-if="playsongdata.whetherbottom"/> -->
   </div>
 </template>
 
@@ -47,7 +47,7 @@ import Banner from '@/components/banner.vue'
 import Personalized from '@/components/personalized.vue'
 import Newsong from '@/components/newsong.vue'
 import {mapState,mapMutations} from 'vuex'
-import Bottomplay from '@/components/bottomplay.vue'
+// import Bottomplay from '@/components/bottomplay.vue'
 
 export default {
   name: 'home',
@@ -56,7 +56,7 @@ export default {
     Banner,
     Personalized,
     Newsong,
-    Bottomplay
+    // Bottomplay
   },
   computed: {
         ...mapState([

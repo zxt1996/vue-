@@ -1,5 +1,5 @@
-let API_ROOT = 'http://netease.bluej.cn';
-
+// let API_ROOT = 'http://netease.bluej.cn';
+let API_ROOT = 'http://music.couchpotato.fun';
 const apiMusic = {
     phonelogin:'/login/cellphone',//手机登录
     getverify:'/captcha/sent',//发送验证码

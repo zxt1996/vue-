@@ -6,7 +6,7 @@
         :key="index"
         class="banner"
         >
-            <img :src="everybanner.picUrl">
+            <img :src="everybanner.imageUrl">
         </div>
     </a-carousel>
   </div>

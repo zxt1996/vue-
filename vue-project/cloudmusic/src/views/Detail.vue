@@ -14,6 +14,25 @@
                 </span>
             </div>
         </div>
+        <!-- <VirtualList
+            :size="40"
+            :remain="8"
+        >
+            <div
+            v-for="(everydetailsong,index) in detaillist"
+            :key="everydetailsong+index"
+            class="songfour"
+            @click="playsong(index)">
+                <div class="one">
+                    <div>{{index+1}}</div>
+                    <div class="songfourmid">
+                        <span>{{everydetailsong.name}}</span>
+                        <span>{{everydetailsong.ar[0].name}}-{{everydetailsong.al.name}}</span>
+                    </div>
+                </div>
+                <div><i class="iconfont icon-msnui-more"></i></div>
+            </div>
+        </VirtualList> -->
         <div
          v-for="(everydetailsong,index) in detaillist"
          :key="everydetailsong+index"
@@ -28,14 +47,15 @@
             </div>
             <div><i class="iconfont icon-msnui-more"></i></div>
         </div>
-        <Bottomplay v-if="playsongdata.whetherbottom" />
+        <!-- <Bottomplay v-if="playsongdata.whetherbottom" /> -->
     </div>
 </template>
 
 <script>
 import {mapState,mapMutations,mapActions} from 'vuex'
 import api from '../api/index'
-import Bottomplay from '@/components/bottomplay.vue'
+// import Bottomplay from '@/components/bottomplay.vue'
+// import VirtualList from 'vue-virtual-scroll-list'
 
 export default {
     data(){
@@ -48,7 +68,8 @@ export default {
         }
     },
     components:{
-        Bottomplay
+        // Bottomplay,
+        // VirtualList
     },
     computed: {
         ...mapState([
@@ -58,6 +79,8 @@ export default {
     },
     created() {
         api.getplaylistdetail(this.playlistdetailuid.id).then((res)=>{
+            // let fiftenres = res.data.playlist.tracks.slice(0,10);
+            // this.detaillist = fiftenres;
             this.detaillist = res.data.playlist.tracks;
             for(let i=0;i<this.detaillist.length;i++){
                 this.templist.push(this.detaillist[i].id);

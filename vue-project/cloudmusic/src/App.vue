@@ -1,9 +1,24 @@
 <template>
   <div id="app">
     <router-view/>
+    <Bottomplay v-if="playsongdata.whetherbottom" />
   </div>
 </template>
 
+<script>
+import Bottomplay from '@/components/bottomplay.vue'
+import {mapState} from 'vuex'
+export default {
+  components:{
+      Bottomplay,
+  },
+  computed: {
+        ...mapState([
+            'playsongdata'
+        ])
+    },
+}
+</script>
 <style lang="scss">
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;

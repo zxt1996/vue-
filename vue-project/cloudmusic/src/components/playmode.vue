@@ -66,19 +66,29 @@ export default {
         this.songtime = this.changetime(this.onlynowsong.dt);
         this.getsongtime(this.songtime);
         //滚动条
-        audio.addEventListener('play',()=>{
-            this.mysetInterval = setInterval(()=>{
-                if(audio.currentTime){
-                    //当前歌曲总时长
-                    let duration = audio.duration;
-                    //当前歌曲已播时长
-                    let currenttime = audio.currentTime;
-                    //播放时长所占比例
-                    let percenttime = parseInt(currenttime/duration*100);
-                    this.getpercenttime(percenttime);
-                }
-            },2000)
-        });
+        // audio.addEventListener('play',()=>{
+        //     this.mysetInterval = setInterval(()=>{
+        //         if(audio.currentTime){
+        //             //当前歌曲总时长
+        //             let duration = audio.duration;
+        //             //当前歌曲已播时长
+        //             let currenttime = audio.currentTime;
+        //             //播放时长所占比例
+        //             let percenttime = parseInt(currenttime/duration*100);
+        //             this.getpercenttime(percenttime);
+        //         }
+        //     },500)
+        // });
+        audio.addEventListener('timeupdate',()=>{
+            // window.console.log(this.$refs.myaudio.currentTime)
+            //当前歌曲总时长
+            let duration = audio.duration;
+            //当前歌曲已播时长
+            let currenttime = audio.currentTime;
+            //播放时长所占比例
+            let percenttime = parseInt(currenttime/duration*100);
+            this.getpercenttime(percenttime);
+        })
     },
     methods: {
         ...mapMutations([
